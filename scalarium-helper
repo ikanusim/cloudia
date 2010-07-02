@@ -1,0 +1,48 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'ostruct'
+require '/root/scalarium-agent/vendor/gems/environment'
+require 'json'
+
+module Scalarium
+  extend self
+  @options = OpenStruct.new
+  @commands = []
+
+  def roles
+    cluster_state = JSON.parse(File.read('/var/lib/scalarium/cluster_state.json'))
+    roles = cluster_state['instance']['roles']
+    if @options.verbose
+      roles = roles.map {|role| cluster_state['roles'][role]['name']}
+    end
+    puts roles.join(', ')
+  end
+
+  @opts = OptionParser.new do |opts|
+    opts.banner = 'Usage: scalarium [options]'
+
+    opts.on('-r', '--roles', 'List all roles assigned to the current node') do
+      @commands.push(:roles)
+    end
+
+    opts.on('-h', '--help', 'Display this screen') do
+      puts opts
+      exit
+    end
+
+    opts.on('-v', '--verbose', 'Be verbose') do
+      @options.verbose = true
+    end
+  end
+
+  def execute(args)
+    @opts.parse!(args.dup)
+    if args.empty?
+      puts @opts
+      exit
+    end
+    @commands.each {|command| send(command)}
+  end
+end
+
+Scalarium.execute(ARGV)
