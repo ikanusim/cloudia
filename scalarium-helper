@@ -18,6 +18,10 @@ module Scalarium
     puts roles.join(', ')
   end
 
+  def history
+    puts `grep -o '"activity":"[^"]\\+"' /root/scalarium-agent/log/chef/*.json`
+  end
+
   @opts = OptionParser.new do |opts|
     opts.banner = 'Usage: scalarium [options]'
 
@@ -28,6 +32,10 @@ module Scalarium
     opts.on('-h', '--help', 'Display this screen') do
       puts opts
       exit
+    end
+
+    opts.on('-H', '--history', 'List history of chef runs') do
+      @commands.push(:history)
     end
 
     opts.on('-v', '--verbose', 'Be verbose') do
