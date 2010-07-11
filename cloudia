@@ -22,6 +22,13 @@ module Scalarium
     puts `grep -o '"activity":"[^"]\\+"' /root/scalarium-agent/log/chef/*.json`
   end
 
+  def list_custom_recipes
+    `find /root/scalarium-agent/site-cookbooks/*/recipes/*.rb`.
+      scan(%r(/root/scalarium-agent/site-cookbooks/([^/]+)/recipes/([^.]+)\.rb)).each do |cookbook, recipe|
+        puts "#{cookbook}::#{recipe}"
+      end
+  end
+
   @opts = OptionParser.new do |opts|
     opts.banner = 'Usage: scalarium [options]'
 
@@ -36,6 +43,10 @@ module Scalarium
 
     opts.on('-H', '--history', 'List history of chef runs') do
       @commands.push(:history)
+    end
+
+    opts.on('-l', '--list-custom-recipes', 'List custom recipes') do
+      @commands.push(:list_custom_recipes)
     end
 
     opts.on('-v', '--verbose', 'Be verbose') do
