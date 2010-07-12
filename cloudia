@@ -4,7 +4,7 @@ require 'ostruct'
 require '/root/scalarium-agent/vendor/gems/environment'
 require 'json'
 
-module Scalarium
+module Cloudia
   extend self
   @options = OpenStruct.new
   @commands = []
@@ -72,4 +72,4 @@ module Scalarium
   end
 end
 
-Scalarium.execute(ARGV)
+Cloudia.execute(ARGV)
