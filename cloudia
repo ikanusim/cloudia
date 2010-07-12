@@ -34,7 +34,7 @@ module Scalarium
   end
 
   @opts = OptionParser.new do |opts|
-    opts.banner = 'Usage: scalarium [options]'
+    opts.banner = "Usage: #{File.basename($0)} [options]"
 
     opts.on('-r', '--roles', 'List all roles assigned to the current node') do
       @commands.push(:roles)
