@@ -29,6 +29,10 @@ module Scalarium
       end
   end
 
+  def update
+    `wget -O #{$0} http://github.com/ikanusim/cloudia/raw/master/cloudia`
+  end
+
   @opts = OptionParser.new do |opts|
     opts.banner = 'Usage: scalarium [options]'
 
@@ -47,6 +51,10 @@ module Scalarium
 
     opts.on('-l', '--list-custom-recipes', 'List custom recipes') do
       @commands.push(:list_custom_recipes)
+    end
+
+    opts.on('-u', '--update', 'Update cloudia') do
+      @commands.push(:update)
     end
 
     opts.on('-v', '--verbose', 'Be verbose') do
