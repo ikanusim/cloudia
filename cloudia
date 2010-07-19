@@ -29,6 +29,10 @@ module Cloudia
       end
   end
 
+   def update_custom_recipes
+    `sh -c 'cd /root/scalarium-agent/site-cookbooks; git checkout .; git clean -dfx; git checkout master; git pull; git checkout deploy; git rebase master'`
+  end
+
   def repeat_latest_chef_run
     puts `/root/scalarium-agent/bin/chef-solo -c /root/scalarium-agent/config/solo.rb -j $(ls -1 /root/scalarium-agent/log/chef/*.json |tail -1)`
   end
@@ -55,6 +59,10 @@ module Cloudia
 
     opts.on('-l', '--list-custom-recipes', 'List custom recipes') do
       @commands.push(:list_custom_recipes)
+    end
+
+     opts.on('-U', '--update-custom-recipes', 'Update custom recipes') do
+      @commands.push(:update_custom_recipes)
     end
 
     opts.on('-R', '--repeat-latest-chef-run', 'Repeat latest chef run') do
