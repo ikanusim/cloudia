@@ -37,6 +37,10 @@ module Cloudia
     puts `/root/scalarium-agent/bin/chef-solo -c /root/scalarium-agent/config/solo.rb -j $(ls -1 /root/scalarium-agent/log/chef/*.json |tail -1)`
   end
 
+  def repeat_latest_chef_deployment
+    puts `/root/scalarium-agent/bin/chef-solo -c /root/scalarium-agent/config/solo.rb -j $(grep -l '"activity":"deploy"' /root/scalarium-agent/log/chef/*.json |tail -1)`
+  end
+
   def update
     `wget -O #{$0} http://github.com/ikanusim/cloudia/raw/master/cloudia`
   end
@@ -67,6 +71,10 @@ module Cloudia
 
     opts.on('-R', '--repeat-latest-chef-run', 'Repeat latest chef run') do
       @commands.push(:repeat_latest_chef_run)
+    end
+
+    opts.on('--repeat-latest-chef-deployment', 'Repeat latest chef deployment') do
+      @commands.push(:repeat_latest_chef_deployment)
     end
 
     opts.on('-u', '--update', 'Update cloudia') do
