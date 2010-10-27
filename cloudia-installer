@@ -1,0 +1,18 @@
+#!/bin/bash
+EXE=/usr/bin/cloudia
+
+if [ "$(whoami)" != "root" ]
+then
+  echo "This installer has to be executed as root"
+  exit 1
+fi
+
+if ! gem list | grep "^json "
+then
+  gem install --no-rdoc --no-ri json
+fi
+
+curl http://github.com/ikanusim/cloudia/raw/master/cloudia > $EXE 2>/dev/null
+chmod 755 $EXE 
+
+$EXE
