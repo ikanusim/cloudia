@@ -50,7 +50,7 @@ module Cloudia
   end
 
   def update
-    `wget -O #{$0} https://github.com/ikanusim/cloudia/raw/master/cloudia`
+    `curl https://github.com/ikanusim/cloudia/raw/master/cloudia > #{$0} 2>/dev/null`
   end
 
   @opts = OptionParser.new do |opts|
